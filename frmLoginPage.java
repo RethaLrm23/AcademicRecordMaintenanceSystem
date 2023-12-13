@@ -1,0 +1,359 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+
+package academicrecordmaintenancesystem;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Lerum
+ */
+
+public class frmLoginPage extends javax.swing.JFrame {
+
+    /**
+     * Creates new form frmLoginPage
+     */
+    
+    public frmLoginPage() {
+        initComponents();
+    }
+    
+    // Beginning Of mFacultyClerk Method
+    public void mFacultyClerk(){
+        
+        if(txtUsername.getText().equals("adminFC") && txtPassword.getText().equals("4321")){
+            frmFacultyClerk faculty_clerk = new frmFacultyClerk();
+            faculty_clerk.show();
+            dispose();
+        }
+        else if(txtUsername.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Incorrect Username");
+            txtUsername.requestFocusInWindow();   
+        }
+        else if(txtPassword.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Incorrect Password");
+            txtPassword.requestFocusInWindow();   
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Incorrect Credentials");
+        }
+        
+    }
+    // End Of mLogin Method
+    
+    // Beginning Of mRegistrarClerk Method
+    public void mRegistrarClerk(){
+        
+        if(txtUsername.getText().equals("adminRC") && txtPassword.getText().equals("1234")){
+            frmRegistrarClerk registrar_clerk = new frmRegistrarClerk();
+            registrar_clerk.show();
+            dispose();
+        }
+        else if(txtUsername.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Incorrect Username");
+            txtUsername.requestFocusInWindow();   
+        }
+        else if(txtPassword.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Incorrect Password");
+            txtPassword.requestFocusInWindow();   
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Incorrect Credentials");
+        }
+        
+    }
+    // End Of mLogin Method
+    
+    // Beginning Of mStudent Method
+    public void mStudent(){
+        
+        try{
+
+            // Establish a connection to the MySQL server
+            String url = "jdbc:mysql://localhost/students_information";
+            String username = "root";
+            String password = "Password";
+            Connection conn = DriverManager.getConnection(url, username, password);
+
+            // Create a Prepared Statement object to execute SQL commands
+            String sql = "select * from students_profiles where username = ? and pass = ?";
+            PreparedStatement preparedStmt = conn.prepareStatement(sql);
+
+            // Set the values for the update statement using the text fields
+            preparedStmt.setString(1, txtUsername.getText());
+            preparedStmt.setString(2, txtPassword.getText());
+            ResultSet rs = preparedStmt.executeQuery();
+
+            if(rs.next()){
+
+                frmStudent stud = new frmStudent();
+                stud.setVisible(true);
+                frmStudent.Instance.lbl.setText(txtUsername.getText());
+                dispose();
+
+            }
+            else{
+                
+                if(txtUsername.getText().equals("")){
+                    JOptionPane.showMessageDialog(null, "Incorrect Username");
+                }else if(txtPassword.getText().equals("")){
+                    JOptionPane.showMessageDialog(null, "Incorrect Password");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Incorrect Credentials");
+                }
+            }
+
+            preparedStmt.close();
+            conn.close();
+
+        }
+        catch(Exception e){
+
+            // If Connection Fails
+            JOptionPane.showMessageDialog(null, "ERROR! Database Connection Failed.");
+
+        }
+        
+    }
+    // End Of mLogin Method
+    
+    // Beginning Of mLogin Method
+    public void mLogin(){
+        
+        if(cboRole.getSelectedItem().equals("<Select>")){
+            
+            JOptionPane.showMessageDialog(this, "Please Select User Role");
+            cboRole.requestFocusInWindow();
+            
+        }
+        else if(cboRole.getSelectedItem().equals("Faculty Clerk")){
+            
+            mFacultyClerk();
+            
+        }
+        else if(cboRole.getSelectedItem().equals("Registrar Clerk")){
+            
+            mRegistrarClerk();
+            
+        }
+        else{
+            
+            mStudent();
+            
+        }
+        
+    }
+    // End Of mLogin Method
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        lblLoginPassword = new javax.swing.JLabel();
+        lblLoginUsername = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JTextField();
+        cboRole = new javax.swing.JComboBox<>();
+        btnClose = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        lblLoginUserRole = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
+        txtUsername = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        lblLoginPassword.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        lblLoginPassword.setText("Password:");
+
+        lblLoginUsername.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        lblLoginUsername.setText("Username:");
+
+        txtPassword.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+
+        cboRole.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        cboRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Select>", "Faculty Clerk", "Registrar Clerk", "Student" }));
+
+        btnClose.setBackground(new java.awt.Color(0, 0, 0));
+        btnClose.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        btnClose.setForeground(new java.awt.Color(255, 255, 255));
+        btnClose.setText("CLOSE");
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/academicrecordmaintenancesystem/School Logo.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(jLabel3)
+                .addContainerGap(85, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(166, 166, 166))
+        );
+
+        lblLoginUserRole.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        lblLoginUserRole.setText("User Role:");
+
+        btnLogin.setBackground(new java.awt.Color(0, 0, 0));
+        btnLogin.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogin.setText("LOGIN");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
+        txtUsername.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblLoginPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblLoginUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblLoginUserRole, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtPassword)
+                    .addComponent(txtUsername))
+                .addGap(76, 76, 76))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(lblLoginUserRole)
+                .addGap(18, 18, 18)
+                .addComponent(cboRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(lblLoginUsername)
+                .addGap(18, 18, 18)
+                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(lblLoginPassword)
+                .addGap(18, 18, 18)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClose)
+                    .addComponent(btnLogin))
+                .addContainerGap(67, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        
+        System.exit(0);
+        
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        
+        mLogin();
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(frmLoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(frmLoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(frmLoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(frmLoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new frmLoginPage().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JComboBox<String> cboRole;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblLoginPassword;
+    private javax.swing.JLabel lblLoginUserRole;
+    private javax.swing.JLabel lblLoginUsername;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtUsername;
+    // End of variables declaration//GEN-END:variables
+}
